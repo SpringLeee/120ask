@@ -24,11 +24,37 @@ def Md5(str):
     m.update(str.encode("utf8"))
     return m.hexdigest() 
 
-print("                                                                 ")
-print("=================================================================")
-print("                                                                 ")
-print("          程序启动成功,3秒后开始采集   ")
+start = time.clock()
 
+
+print("                                                                 ")
+print("        =========================================================================================================")
+print("""
+
+                                     ,            _..._            ,
+                                    {'.         .'     '.         .'}
+                                    { ~ '.      _|=    __|_      .'  ~}
+                                  { ~  ~ '-._ (___________) _.-'~  ~  }
+                                 {~  ~  ~   ~.'           '. ~    ~    }
+                                {  ~   ~  ~ /   /\     /\   \   ~    ~  }
+                                {   ~   ~  /    __     __    \ ~   ~    }
+                                 {   ~  /\/  -<( o)   ( o)>-  \/\ ~   ~}
+                                  { ~   ;(      \/ .-. \/      );   ~ }
+                                   { ~ ~\_  ()  ^ (   ) ^  ()  _/ ~  }
+                                    '-._~ \   (`-._'-'_.-')   / ~_.-'
+                                        '--\   `'._'"'_.'`   /--'
+                                            \     \`-'/     /
+                                             `\    '-'    /'
+                                               `\       /'
+                                                 '-...-'
+
+
+                 """)
+print("                                                                 ")
+print("                                        程序启动成功,3秒后开始采集   ")
+print("\r")
+print("\r")
+print("\r")
 time.sleep(3)
 
 print("正在读取分词库...........")
@@ -48,17 +74,28 @@ fenleiHtml=HttpGet(fenleiUrl)
 fenleiList=fenleiHtml.find(".h-ul1").find("a")
 fenleiItems=[]
 for fenlei in fenleiList.items():
-    fenleiItems.append(fenlei.attr("href"))
+    fenlei2items=HttpGet(fenlei.attr("href")).find(".h-ul1").find("a")
+    for fenlei2 in fenlei2items.items():
+            fenlei3items=HttpGet(fenlei2.attr("href")).find(".h-ul1").find("a")
+            isEnd=True
+            for fenlei3 in fenlei3items.items():
+               isEnd=False
+               fenleiItems.append(fenlei3.attr("href"))
 
-
+            if isEnd==True:
+                fenleiItems.append(fenlei2.attr("href"))
 
 
 
 for fl in fenleiItems:
     aaa=0
     bbb=0
-    for psize in range(1,200):
-        try:
+
+    mypagenum =  int(HttpGet(fl+"over/").find(".h-page").find("a").eq(-1).attr("href")[len(fl+"over/"):][::-1][1:][::-1])
+    
+    
+    for psize in range(1,mypagenum):
+          try:
              purl=fl+"over/"+str(psize)+"/"
              phtml=HttpGet(purl)
              mlist=phtml.find(".h-color")
@@ -103,6 +140,7 @@ for fl in fenleiItems:
                  
                  
                  
+                 
                  ans=content.find(".b_answerli")
                  g=0
                  for x in ans.items():
@@ -133,8 +171,8 @@ for fl in fenleiItems:
                      print(" 入库成功:" + " ："+str(title))
                      bbb+=1
 
-        except Exception:
-           ee="error"
+          except Exception:
+              ee="error"
         
 
 
@@ -144,5 +182,27 @@ con.close()
 
 
 
-print("----------- 全部抓取完成 ----------------------")
+
+end = time.clock()
+mytime= (end-start)
+print('''
+             
+
+
+                                      ,==.              |~~~      全部抓取完成
+                                     /  66\             |
+                                     \c  -_)         |~~~        '''+"本次一共抓取了 "+str(aaa)+" 个问题"+'''
+                                      `) (           |
+                                      /   \       |~~~           '''+"本次一共抓取了 "+str(bbb)+" 个答案"+'''
+                                     /   \ \      |
+                                    ((   /\ \_ |~~~              '''+"本次一共用了  "+str(mytime/3600).split('.')[0]+" 个小时"+'''
+                                     ||  \ `--`|
+                                     / / /  |~~~
+                                ___ (_(___)_|  
+
+
+
+    ''')
+
+
 res=input()
