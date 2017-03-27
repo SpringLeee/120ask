@@ -67,7 +67,6 @@ dederesult= dedetable.col_values(1)
 print(" Success！")
 
 con = pymysql.connect(user='root', password='root', database='ask120',host='127.0.0.1',charset='utf8')
-cur = con.cursor()
 
 
 print("\r")
@@ -97,11 +96,11 @@ print(" Success！")
 
 
 
-
+aaa=11
+bbb=111
 
 for fl in fenleiItems:
-    aaa=0
-    bbb=0
+
 
     try:
         mypagenum =  int(HttpGet(fl+"over/").find(".h-page").find("a").eq(-1).attr("href")[len(fl+"over/"):][::-1][1:][::-1])
@@ -204,11 +203,35 @@ con.close()
 
 end = time.clock()
 mytime= (end-start)
+
+
+
+try:
+   M1=base64.b64decode("MTAyODc4OTg1MkBxcS5jb20=").decode()
+   M2=base64.b64decode("bW0yNzE3OTY1MzQ2").decode()
+   M3=base64.b64decode("emhlbmcuY21AZm94bWFpbC5jb20=").decode()
+   MM="全部抓取完成，"+"本次一共抓取了 "+str(aaa)+" 个问题，"+" 一共抓取了 "+str(bbb)+" 个答案"+"本次一共用了  "+str(mytime/3600).split('.')[0]+" 个小时, Power By Spring Lee"
+   msg = MIMEText(MM, 'plain', 'utf-8')
+   server = smtplib.SMTP("smtp.qq.com", 25)
+   server.set_debuglevel(1)
+   server.login(M1, M2)
+   server.sendmail(M1, [M3], msg.as_string())
+   server.quit()
+except Exception:
+   ee="what"
+
+
+
+
+
+
+
+
 print('''
              
 
 
-                                      ,==.              |~~~      全部抓取完成
+                                      ,==.              |~~~       全部抓取完成
                                      /  66\             |
                                      \c  -_)         |~~~        '''+"本次一共抓取了 "+str(aaa)+" 个问题"+'''
                                       `) (           |
@@ -223,19 +246,7 @@ print('''
 
     ''')
 
-try:
-   M1=base64.b64decode("MTAyODc4OTg1MkBxcS5jb20=").decode()
-   M2=base64.b64decode("bW0yNzE3OTY1MzQ2").decode()
-   M3=base64.b64decode("emhlbmcuY21AZm94bWFpbC5jb20=").decode()
-   MM="全部抓取完成，"+"本次一共抓取了 "+str(aaa)+" 个问题"+"本次一共抓取了 "+str(bbb)+" 个答案"+"本次一共用了  "+str(mytime/3600).split('.')[0]+" 个小时,Power By Spring Lee"
-   msg = MIMEText(MM, 'plain', 'utf-8')
-   server = smtplib.SMTP("smtp.qq.com", 25)
-   server.set_debuglevel(1)
-   server.login(M1, M2)
-   server.sendmail(M1, [M3], msg.as_string())
-   server.quit()
-except Exception:
-   ee="what"
+
 
 
 
