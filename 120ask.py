@@ -67,7 +67,7 @@ dederesult= dedetable.col_values(1)
 print(" Success！")
 
 con = pymysql.connect(user='root', password='root', database='ask120',host='127.0.0.1',charset='utf8')
-
+cur =con.cursor()
 
 print("\r")
 print(" 正在获取采集URl......")
